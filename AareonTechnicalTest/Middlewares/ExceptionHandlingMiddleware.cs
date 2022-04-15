@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 namespace MoviesApi.Middleware
 {
+    // custom middleware to handle errors and logging
     public class ExceptionHandlingMiddleware
     {
         public RequestDelegate _next;
