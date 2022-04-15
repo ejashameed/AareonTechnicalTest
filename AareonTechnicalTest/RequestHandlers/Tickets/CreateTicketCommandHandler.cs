@@ -19,6 +19,8 @@ namespace AareonTechnicalTest.RequestHandlers.Tickets
         }
         public async Task<TicketResponse> Handle(CreateTicketCommand request, CancellationToken cancellationToken)
         {
+            // fluent validator will validate the inputs
+
             // map request object to domain model
             var ticketDomainObject = _mapper.Map<Ticket>(request);
             

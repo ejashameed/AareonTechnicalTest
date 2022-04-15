@@ -21,6 +21,8 @@ namespace AareonTechnicalTest.RequestHandlers.Notes
 
         public async Task<NoteResponse> Handle(CreateNoteCommand request, CancellationToken cancellationToken)
         {
+            // fluent validator will validate the inputs
+
             // map request object to domain model
             var noteDomainObject = _mapper.Map<Note>(request);
 

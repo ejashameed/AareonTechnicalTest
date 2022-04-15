@@ -18,7 +18,8 @@ namespace AareonTechnicalTest.RequestHandlers.Tickets
             _ticketRepository = ticketRepository;
         }
         public async Task<TicketResponse> Handle(DeleteTicketCommand request, CancellationToken cancellationToken)
-        {           
+        {
+            // fluent validator will validate the inputs
             //delete ticket from db
             var resultObject = await _ticketRepository.DeleteTicketAsync(request.Id);
 

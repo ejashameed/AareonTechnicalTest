@@ -19,6 +19,8 @@ namespace AareonTechnicalTest.RequestHandlers.Notes
         }
         public async Task<NoteResponse> Handle(DeleteNoteCommand request, CancellationToken cancellationToken)
         {
+            // fluent validator will validate the inputs
+
             // Is the user authorized to delete a note?
             var person = await _noteRepository.GetPersonAsync(request.removedByPersonId);
             if (person == null)
