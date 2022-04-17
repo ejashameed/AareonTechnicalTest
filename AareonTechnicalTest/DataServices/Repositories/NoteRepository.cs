@@ -2,6 +2,7 @@
 using AareonTechnicalTest.ExceptionHandlers;
 using AareonTechnicalTest.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,23 +22,20 @@ namespace AareonTechnicalTest.DataServices.Repositories
         }
 
         public async Task<Note> AddTicketNoteAsync(Note note)
-        {            
+        {
+            // Is ticket valid?
+            var ticket = await _dbContext.Tickets.Where(t => t.Id.Equals(note.TicketId)).FirstOrDefaultAsync();
+            if (ticket == null)
+                throw new TicketNotFoundException();
+
+            // save new note to db
             note.CreatedDateTime = DateTime.Now;
             await _dbContext.Notes.AddAsync(note);
             await _dbContext.SaveChangesAsync();
-            
+
             #region logging data
-            //log changes
-            var log = new AuditLog()
-            {
-                Source = "Notes",
-                CreatedDateTime = DateTime.Now,
-                TransactionDateTime = note.CreatedDateTime,
-                OperationType = "Create",
-                UserId = note.CreatedBy,
-                Content = JsonSerializer.Serialize(note)
-            };
-            await _logger.LogData(log);
+            //log changes                        
+            await _logger.LogData<Note>(note, "Notes", "Create");
             #endregion
 
             return note;
@@ -68,16 +66,7 @@ namespace AareonTechnicalTest.DataServices.Repositories
 
             #region logging data
             //log changes
-            var log = new AuditLog()
-            {
-                Source = "Notes",
-                CreatedDateTime = DateTime.Now,
-                TransactionDateTime = note.CreatedDateTime,
-                OperationType = "Delete",
-                UserId = note.CreatedBy,
-                Content = JsonSerializer.Serialize(note)
-            };
-            await _logger.LogData(log);
+            await _logger.LogData<Note>(note, "Notes", "Delete");            
             #endregion
 
             return note;
@@ -100,17 +89,8 @@ namespace AareonTechnicalTest.DataServices.Repositories
             await _dbContext.SaveChangesAsync();
             
             #region logging data
-            // log changes
-            var log = new AuditLog()
-            {
-                Source = "Notes",
-                CreatedDateTime = DateTime.Now,
-                TransactionDateTime = noteToUpdate.LastUpdatedDateTime,
-                OperationType = "Update",
-                UserId = noteToUpdate.LastUpdatedBy,
-                Content = JsonSerializer.Serialize(noteToUpdate)
-            };
-            await _logger.LogData(log);
+            // log changes            
+            await _logger.LogData<Note>(noteToUpdate, "Notes", "Update");
             #endregion
 
             return revisedNote;

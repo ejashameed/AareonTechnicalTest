@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using MoviesApi.Middleware;
 using System.Reflection;
 
+
 namespace AareonTechnicalTest
 {
     public class Startup
@@ -28,10 +29,9 @@ namespace AareonTechnicalTest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             
-
             services.AddControllers();
+            
             // mediatR config
             services.AddMediatR(Assembly.GetExecutingAssembly());
 

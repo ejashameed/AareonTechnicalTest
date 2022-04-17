@@ -6,6 +6,6 @@ namespace AareonTechnicalTest.DataLogger
 {
     public interface IDataLoggerRepository
     {
-        Task<Boolean> LogData(AuditLog log);
+        Task<Boolean> LogData<T>(T log, string source, string operationCode);
     }
 }

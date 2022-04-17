@@ -3,14 +3,16 @@ using System;
 using AareonTechnicalTest.DataServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AareonTechnicalTest.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220416185404_AddForeignKeyFromTicketToNoteChange4")]
+    partial class AddForeignKeyFromTicketToNoteChange4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,11 +120,14 @@ namespace AareonTechnicalTest.Migrations
 
             modelBuilder.Entity("AareonTechnicalTest.Models.Note", b =>
                 {
-                    b.HasOne("AareonTechnicalTest.Models.Ticket", null)
+                    b.HasOne("AareonTechnicalTest.Models.Ticket", "Ticket")
                         .WithMany("Notes")
                         .HasForeignKey("TicketId")
+                        .HasConstraintName("ForeignKey_Note_Ticket")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("AareonTechnicalTest.Models.Ticket", b =>
