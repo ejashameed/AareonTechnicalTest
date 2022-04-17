@@ -3,14 +3,16 @@ using System;
 using AareonTechnicalTest.DataServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AareonTechnicalTest.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220416184042_AddForeignKeyFromTicketToNoteChange3")]
+    partial class AddForeignKeyFromTicketToNoteChange3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +53,6 @@ namespace AareonTechnicalTest.Migrations
             modelBuilder.Entity("AareonTechnicalTest.Models.Note", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
@@ -73,8 +74,6 @@ namespace AareonTechnicalTest.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TicketId");
 
                     b.ToTable("Notes");
                 });
@@ -118,16 +117,19 @@ namespace AareonTechnicalTest.Migrations
 
             modelBuilder.Entity("AareonTechnicalTest.Models.Note", b =>
                 {
-                    b.HasOne("AareonTechnicalTest.Models.Ticket", null)
-                        .WithMany("Notes")
-                        .HasForeignKey("TicketId")
+                    b.HasOne("AareonTechnicalTest.Models.Ticket", "ticket")
+                        .WithMany("notes")
+                        .HasForeignKey("Id")
+                        .HasConstraintName("ForeignKey_Note_Ticket")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ticket");
                 });
 
             modelBuilder.Entity("AareonTechnicalTest.Models.Ticket", b =>
                 {
-                    b.Navigation("Notes");
+                    b.Navigation("notes");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,8 +9,14 @@ namespace AareonTechnicalTest.Models
             modelBuilder.Entity<Note>(
                 entity =>
                 {
+                    entity.ToTable("Notes");
                     entity.HasKey(e => e.Id);
-                });
+
+                    //entity.HasOne(t => t.Ticket)
+                    //.WithMany(n => n.Notes)
+                    //.HasForeignKey(e => e.TicketId)
+                    //.HasConstraintName("ForeignKey_Note_Ticket");                    
+                });            
         }
     }
 }

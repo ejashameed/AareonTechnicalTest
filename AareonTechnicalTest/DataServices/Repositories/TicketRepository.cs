@@ -27,17 +27,8 @@ namespace AareonTechnicalTest.DataServices.Repositories
             await _dbContext.SaveChangesAsync();
 
             #region logging data
-            // log changes
-            var log = new AuditLog()
-            {
-                Source = "Tickets",
-                CreatedDateTime = DateTime.Now,
-                TransactionDateTime = DateTime.Now,
-                OperationType = "Create",
-                UserId = ticket.PersonId,
-                Content = JsonSerializer.Serialize(ticket)
-            };
-            await _logger.LogData(log);
+            // log changes                        
+            await _logger.LogData<Ticket>(ticket, "Tickets", "Create");
             #endregion
 
             return ticket;
@@ -51,16 +42,7 @@ namespace AareonTechnicalTest.DataServices.Repositories
 
             #region logging data
             // log changes
-            var log = new AuditLog()
-            {
-                Source = "Tickets",
-                CreatedDateTime = DateTime.Now,
-                TransactionDateTime = DateTime.Now,
-                OperationType = "Delete",
-                UserId = ticket.PersonId,
-                Content = JsonSerializer.Serialize(ticket)
-            };
-            await _logger.LogData(log);
+            await _logger.LogData<Ticket>(ticket, "Tickets", "Delete");            
             #endregion
 
             return ticket;
@@ -75,9 +57,11 @@ namespace AareonTechnicalTest.DataServices.Repositories
         }
 
         public async Task<List<Ticket>> GetTicketsAsync()
-        {
-            List<Ticket> tickets = new List<Ticket>();
-            tickets = await _dbContext.Tickets.ToListAsync();
+        {            
+            var tickets = await _dbContext.Tickets
+                    .Include(n => n.Notes)
+                    .ToListAsync();
+
             return tickets;
         }
 
@@ -90,17 +74,8 @@ namespace AareonTechnicalTest.DataServices.Repositories
             await _dbContext.SaveChangesAsync();
 
             #region logging data
-            // log changes
-            var log = new AuditLog()
-            {
-                Source = "Tickets",
-                CreatedDateTime = DateTime.Now,
-                TransactionDateTime = DateTime.Now,
-                OperationType = "Update",
-                UserId = ticket.PersonId,
-                Content = JsonSerializer.Serialize(ticket)
-            };
-            await _logger.LogData(log);
+            // log changes            
+            await _logger.LogData<Ticket>(ticket, "Tickets", "Update");            
             #endregion
 
             return ticket;

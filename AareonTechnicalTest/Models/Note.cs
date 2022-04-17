@@ -12,8 +12,8 @@ namespace AareonTechnicalTest.Models
         public int CreatedBy { get; set; }
         public DateTime CreatedDateTime { get; set; }        
         public int LastUpdatedBy { get; set; }
-        public DateTime LastUpdatedDateTime { get; set; }
-
+        public DateTime LastUpdatedDateTime { get; set; }        
+        
     }
     
 }

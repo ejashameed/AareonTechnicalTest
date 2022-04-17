@@ -5,7 +5,7 @@ namespace AareonTechnicalTest.DataLogger
 {
     public abstract class BaseDataLogger : IDataLoggerRepository
     {
-        public abstract Task<bool> LogData(AuditLog log);
+        public abstract Task<bool> LogData<T>(T log, string source, string operationCode);
         
     }
 }

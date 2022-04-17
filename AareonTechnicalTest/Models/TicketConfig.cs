@@ -6,10 +6,12 @@ namespace AareonTechnicalTest.Models
     {
         public static void Configure(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Person>(
+            modelBuilder.Entity<Ticket>(
                 entity =>
                 {
+                    entity.ToTable("Tickets");
                     entity.HasKey(e => e.Id);
+
                 });
         }
     }

@@ -9,6 +9,7 @@ namespace AareonTechnicalTest.Models
             modelBuilder.Entity<AuditLog>(
                 entity =>
                 {
+                    entity.ToTable("AuditLogs");
                     entity.HasKey(e => e.Id);
                 });
         }
