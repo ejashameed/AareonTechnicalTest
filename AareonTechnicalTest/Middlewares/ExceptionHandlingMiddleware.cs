@@ -32,6 +32,7 @@ namespace MoviesApi.Middleware
             }
             catch (Exception ex)
             {
+                _logger?.LogError($"Error occured while processing request - { ex.Message}  / {ex.InnerException} ");
                 await HandleException(_context, ex);
             }
             finally
